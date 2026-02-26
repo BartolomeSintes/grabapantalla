@@ -34,15 +34,40 @@ def graba():
         captura.save(ruta_completa)
         time.sleep(intervalo)
 
-# Definir funciones
+def lista():
+    global directorio
+
+    momento_listado = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    path = os.path.abspath(
+        os.path.join(directorio, "listado-" + momento_listado + ".txt")
+    )
+    elementos = os.listdir(directorio)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(f"Listado del directorio: {directorio}\n")
+        f.write("=" * 80 + "\n")
+        with os.scandir(directorio) as elementos:
+            for entrada in elementos:
+                if entrada.is_file():
+                    try:
+                        infor = entrada.stat()
+                        tamano = infor.st_size
+                        fecha_mod = datetime.datetime.fromtimestamp(infor.st_mtime)
+                        f.write(
+                            f"{entrada.name}  {tamano}   {fecha_mod.strftime('%Y-%m-%d %H:%M:%S')}\n"
+                        )
+                    except Exception as e:
+                        f.write(f"No se pudo leer {entrada.name}: {e}\n\n")
+                elif entrada.is_dir():
+                    f.write(f"{entrada.name}/\n\n")
+
 def funcion_1():
     global info, ventana
 
     dir = getattr(sys, "_MEIPASS", os.path.abspath(os.path.dirname(__file__)))
 
-    path = os.path.abspath(os.path.join(dir, "img/circulo-rojo-128.png"))
-    icono = ImageTk.PhotoImage(file=path)
-    ventana.iconphoto(True, icono)
+    # path = os.path.abspath(os.path.join(dir, "img/circulo-rojo-128.png"))
+    # icono = ImageTk.PhotoImage(file=path)
+    # ventana.iconphoto(True, icono)
 
     path = os.path.abspath(os.path.join(dir, "img/circulo-rojo.ico"))
     ventana.after(201, lambda: ventana.iconbitmap(path))
@@ -57,40 +82,20 @@ def funcion_2():
 
     dir = getattr(sys, "_MEIPASS", os.path.abspath(os.path.dirname(__file__)))
 
-    path = os.path.abspath(os.path.join(dir, "img/circulo-rojo-128.png"))
-    icono = ImageTk.PhotoImage(file=path)
-    ventana.iconphoto(True, icono)
+    # path = os.path.abspath(os.path.join(dir, "img/circulo-rojo-128.png"))
+    # icono = ImageTk.PhotoImage(file=path)
+    # ventana.iconphoto(True, icono)
 
     path = os.path.abspath(os.path.join(dir, "img/circulo-negro.ico"))
     ventana.after(201, lambda: ventana.iconbitmap(path))
 
     info.config(text="⚫ Inactivo", fg="black")
 
+    hilo = threading.Thread(target=lista, daemon=True)
+    hilo.start()
+
     grabando = False
 
-    # directorio = "C:/tmp/capturas"
-    # momento_listado = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    # path = os.path.abspath(
-    #     os.path.join(directorio, "listado-" + momento_listado + ".txt")
-    # )
-    # elementos = os.listdir(directorio)
-    # with open(path, "w", encoding="utf-8") as f:
-    #     f.write(f"Listado del directorio: {directorio}\n")
-    #     f.write("=" * 80 + "\n")
-    #     with os.scandir(directorio) as elementos:
-    #         for entrada in elementos:
-    #             if entrada.is_file():
-    #                 try:
-    #                     infor = entrada.stat()
-    #                     tamano = infor.st_size
-    #                     fecha_mod = datetime.datetime.fromtimestamp(infor.st_mtime)
-    #                     f.write(
-    #                         f"{entrada.name}  {tamano}   {fecha_mod.strftime('%Y-%m-%d %H:%M:%S')}\n"
-    #                     )
-    #                 except Exception as e:
-    #                     f.write(f"No se pudo leer {entrada.name}: {e}\n\n")
-    #             elif entrada.is_dir():
-    #                 f.write(f"{entrada.name}/\n\n")
 
 intervalo = 30
 directorio = "C:/tmp/capturas"
