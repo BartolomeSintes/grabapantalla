@@ -27,7 +27,7 @@ def graba():
         try:
             fuente = ImageFont.truetype("arial.ttf", 30)
         except IOError:
-            fuente = ImageFont.load_default()
+            fuente = ImageFont.load_default()  # Si no encuentra la fuente
         posicion = (50, 50)
         color = (255, 0, 0)
         dibujo.text(posicion, texto_en_captura, fill=color, font=fuente)
@@ -35,6 +35,7 @@ def graba():
         # print(f"Captura de pantalla guardada como: {ruta_completa}")
         time.sleep(intervalo)
 
+# Definir funciones
 def funcion_1():
     global info, ventana
     dir = getattr(sys, "_MEIPASS", os.path.abspath(os.path.dirname(__file__)))
@@ -63,13 +64,14 @@ def funcion_2():
 
 intervalo = 30
 directorio = "C:/tmp/capturas"
+# directorio = "/home/tu_usuario/mis_archivos"
 grabando = True
 
 os.makedirs(directorio, exist_ok=True)
 
 ventana = tk.Tk()
 ventana.title("Capturador de pantalla")
-ventana.geometry("300x200")
+ventana.geometry("300x200")  # Ancho x Alto
 
 dir = getattr(sys, "_MEIPASS", os.path.abspath(os.path.dirname(__file__)))
 path = os.path.abspath(os.path.join(dir, "img/circulo-negro.ico"))
@@ -78,10 +80,13 @@ ventana.after(201, lambda: ventana.iconbitmap(path))
 info = tk.Label(ventana, text="⚫ Inactivo", font=("Arial", 14), fg="black")
 info.pack(pady=15)
 
+# Crear botones
 boton1 = tk.Button(ventana, text="Grabar", command=funcion_1, width=20)
 boton2 = tk.Button(ventana, text="Detener", command=funcion_2, width=20)
 
+# Colocar los botones en la ventana
 boton1.pack(pady=10)
 boton2.pack(pady=10)
 
+# Iniciar el bucle principal de la aplicación
 ventana.mainloop()
