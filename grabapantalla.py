@@ -5,6 +5,8 @@ import sys
 import threading
 import time
 import tkinter as tk
+import webbrowser
+from tkinter import ttk
 
 from PIL import ImageDraw, ImageFont, ImageGrab, ImageTk
 
@@ -96,6 +98,55 @@ def funcion_2():
 
     grabando = False
 
+def abrir_enlace(event):
+    webbrowser.open("https://mclibre.org/")
+
+def abrir_acerca_de():
+    # Crear ventana "Acerca de"
+    acerca = tk.Toplevel(ventana)
+    acerca.title("Acerca de...")
+    acerca.geometry("300x130")
+
+    # Contenido
+    # etiqueta = ttk.Label(
+    #     acerca,
+    #     text="mclibre Screenshots\nVersión 0.7\n(c) 2025 Bartolomé Sintes Marco\nhttps://mclibre.org",
+    #     justify="center",
+    # )
+    # etiqueta.pack(expand=True, pady=20)
+
+    # boton_cerrar = ttk.Button(acerca, text="Cerrar", command=acerca.destroy)
+    # boton_cerrar.pack(pady=10)
+
+    # Texto seleccionable
+    texto_info = "mclibre Screenshots\nVersión 0.7\n(c) 2025 Bartolomé Sintes Marco\n"
+
+    caja_texto = tk.Text(
+        acerca,
+        width=40,
+        height=4,
+        wrap="word",
+        borderwidth=0,
+        background=acerca.cget("background"),
+    )
+    caja_texto.pack(padx=10, pady=(10, 0))
+    caja_texto.insert("1.0", texto_info)
+    caja_texto.config(state="disabled")
+
+    # ---- ENLACE CLICABLE ----
+    enlace = tk.Label(
+        acerca,
+        text="https://mclibre.org/",
+        fg="blue",
+        cursor="hand2",
+        font=("Arial", 10, "underline"),
+    )
+    enlace.pack(after=caja_texto)
+    enlace.bind("<Button-1>", abrir_enlace)
+
+    # Botón cerrar
+    ttk.Button(acerca, text="Cerrar", command=acerca.destroy).pack(after=enlace)
+
 
 intervalo = 30
 directorio = "C:/tmp/capturas"
@@ -107,6 +158,12 @@ os.makedirs(directorio, exist_ok=True)
 ventana = tk.Tk()
 ventana.title("Capturador de pantalla")
 ventana.geometry("300x200")  # Ancho x Alto
+
+menu_bar = tk.Menu(ventana)
+menu_ayuda = tk.Menu(menu_bar, tearoff=0)
+menu_ayuda.add_command(label="Acerca de...", command=abrir_acerca_de)
+menu_bar.add_cascade(label="Ayuda", menu=menu_ayuda)
+ventana.config(menu=menu_bar)
 
 dir = getattr(sys, "_MEIPASS", os.path.abspath(os.path.dirname(__file__)))
 path = os.path.abspath(os.path.join(dir, "img/circulo-negro.ico"))
