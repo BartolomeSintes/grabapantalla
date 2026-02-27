@@ -12,7 +12,7 @@ from PIL import ImageDraw, ImageFont, ImageGrab, ImageTk
 
 
 def graba():
-    global directorio, intervalo, grabando
+    global directorio_base, directorio, intervalo, grabando
 
     grabando = True
     while grabando:
@@ -33,12 +33,16 @@ def graba():
         posicion = (50, 50)
         color = (255, 0, 0)
         dibujo.text(posicion, texto_en_captura, fill=color, font=fuente)
+        os.makedirs(directorio_base, exist_ok=True)
+        os.makedirs(directorio, exist_ok=True)
         captura.save(ruta_completa)
         time.sleep(intervalo)
 
 def lista():
-    global directorio
+    global directorio_base, directorio
 
+    os.makedirs(directorio_base, exist_ok=True)
+    os.makedirs(directorio, exist_ok=True)
     momento_listado = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     path = os.path.abspath(
         os.path.join(directorio, "listado-" + momento_listado + ".txt")
@@ -119,7 +123,7 @@ def abrir_acerca_de():
     # boton_cerrar.pack(pady=10)
 
     # Texto seleccionable
-    texto_info = "mclibre Screenshots\nVersión 0.7\n(c) 2025 Bartolomé Sintes Marco\n"
+    texto_info = "mclibre Screenshots\nVersión 0.8 (2025.11.18)\n(c) 2025 Bartolomé Sintes Marco\n"
 
     caja_texto = tk.Text(
         acerca,
@@ -149,10 +153,12 @@ def abrir_acerca_de():
 
 
 intervalo = 30
+directorio_base = "C:/tmp"
 directorio = "C:/tmp/capturas"
 # directorio = "/home/tu_usuario/mis_archivos"
 grabando = True
 
+os.makedirs(directorio_base, exist_ok=True)
 os.makedirs(directorio, exist_ok=True)
 
 ventana = tk.Tk()
