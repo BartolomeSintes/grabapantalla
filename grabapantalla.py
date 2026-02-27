@@ -125,7 +125,9 @@ def abrir_acerca_de():
     # boton_cerrar.pack(pady=10)
 
     # Texto seleccionable
-    texto_info = "mclibre Screenshots\nVersión 0.9 (2026.02.13)\n(c) 2026 Bartolomé Sintes Marco\n"
+    texto_info = (
+        "mclibre Capturas\nVersión 0.10 (2026.02.13)\n(c) 2026 Bartolomé Sintes Marco\n"
+    )
 
     caja_texto = tk.Text(
         acerca,
@@ -153,40 +155,46 @@ def abrir_acerca_de():
     # Botón cerrar
     ttk.Button(acerca, text="Cerrar", command=acerca.destroy).pack(after=enlace)
 
+def main():
+    intervalo = 30
+    directorio_base = "C:/tmp/capturas"
+    directorio = "C:/tmp/capturas/" + datetime.datetime.now().strftime(
+        "%Y-%m-%d-%H-%M-%S"
+    )
+    # directorio = "/home/tu_usuario/mis_archivos"
+    grabando = True
 
-intervalo = 30
-directorio_base = "C:/tmp/capturas"
-directorio = "C:/tmp/capturas/" + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-# directorio = "/home/tu_usuario/mis_archivos"
-grabando = True
+    os.makedirs(directorio_base, exist_ok=True)
+    os.makedirs(directorio, exist_ok=True)
 
-os.makedirs(directorio_base, exist_ok=True)
-os.makedirs(directorio, exist_ok=True)
+    ventana = tk.Tk()
+    ventana.title("Capturador de pantalla")
+    ventana.geometry("300x200")
 
-ventana = tk.Tk()
-ventana.title("Capturador de pantalla")
-ventana.geometry("300x200")  # Ancho x Alto
+    menu_bar = tk.Menu(ventana)
+    menu_ayuda = tk.Menu(menu_bar, tearoff=0)
+    menu_ayuda.add_command(label="Acerca de...", command=abrir_acerca_de)
+    menu_bar.add_cascade(label="Ayuda", menu=menu_ayuda)
+    ventana.config(menu=menu_bar)
 
-menu_bar = tk.Menu(ventana)
-menu_ayuda = tk.Menu(menu_bar, tearoff=0)
-menu_ayuda.add_command(label="Acerca de...", command=abrir_acerca_de)
-menu_bar.add_cascade(label="Ayuda", menu=menu_ayuda)
-ventana.config(menu=menu_bar)
+    dir = getattr(sys, "_MEIPASS", os.path.abspath(os.path.dirname(__file__)))
+    path = os.path.abspath(os.path.join(dir, "img/circulo-negro.ico"))
+    ventana.after(201, lambda: ventana.iconbitmap(path))
 
-dir = getattr(sys, "_MEIPASS", os.path.abspath(os.path.dirname(__file__)))
-path = os.path.abspath(os.path.join(dir, "img/circulo-negro.ico"))
-ventana.after(201, lambda: ventana.iconbitmap(path))
+    info = tk.Label(ventana, text="⚫ Inactivo", font=("Arial", 14), fg="black")
+    info.pack(pady=15)
 
-info = tk.Label(ventana, text="⚫ Inactivo", font=("Arial", 14), fg="black")
-info.pack(pady=15)
+    # Crea botones
+    boton1 = tk.Button(ventana, text="Grabar", command=funcion_1, width=20)
+    boton2 = tk.Button(ventana, text="Detener", command=funcion_2, width=20)
 
-# Crear botones
-boton1 = tk.Button(ventana, text="Grabar", command=funcion_1, width=20)
-boton2 = tk.Button(ventana, text="Detener", command=funcion_2, width=20)
+    # Coloca los botones en la ventana
+    boton1.pack(pady=10)
+    boton2.pack(pady=10)
 
-# Colocar los botones en la ventana
-boton1.pack(pady=10)
-boton2.pack(pady=10)
+    # Inicia el bucle principal de la aplicación
+    ventana.mainloop()
 
-# Iniciar el bucle principal de la aplicación
-ventana.mainloop()
+
+if __name__ == "__main__":
+    main()
