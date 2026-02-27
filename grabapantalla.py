@@ -125,7 +125,7 @@ def abrir_acerca_de():
     # boton_cerrar.pack(pady=10)
 
     # Texto seleccionable
-    texto_info = "mclibre Screenshots\nVersión 0.8 (2025.11.18)\n(c) 2025 Bartolomé Sintes Marco\n"
+    texto_info = "mclibre Screenshots\nVersión 0.9 (2026.02.13)\n(c) 2026 Bartolomé Sintes Marco\n"
 
     caja_texto = tk.Text(
         acerca,
@@ -155,8 +155,8 @@ def abrir_acerca_de():
 
 
 intervalo = 30
-directorio_base = "C:/tmp"
-directorio = "C:/tmp/capturas"
+directorio_base = "C:/tmp/capturas"
+directorio = "C:/tmp/capturas/" + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 # directorio = "/home/tu_usuario/mis_archivos"
 grabando = True
 
