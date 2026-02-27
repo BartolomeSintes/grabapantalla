@@ -24,7 +24,9 @@ def graba():
         nombre_archivo = f"captura-{momento_archivo}.png"
         texto_en_captura = momento_captura
         ruta_completa = os.path.join(directorio, nombre_archivo)
-        captura = ImageGrab.grab()
+        captura = ImageGrab.grab(
+            bbox=None, include_layered_windows=False, all_screens=True
+        )
         dibujo = ImageDraw.Draw(captura)
         try:
             fuente = ImageFont.truetype("arial.ttf", 30)
